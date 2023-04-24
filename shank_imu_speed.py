@@ -9,10 +9,11 @@ import pendulum_utils as pu
 import quaternion
 import shank_walking_utils as sw
 
+#file path of the data folder labeled IMU
 file_path = '/Users/laurenparola/Library/CloudStorage/Box-Box/Lauren-Projects/Code/-_-/Test_Data_2_17/IMU/'
 
 #input the activity folder, mine is named walking 
-sensor_data = pp.upload_sensor_txt(file_path,'Treadmill Walking')
+sensor_data = pp.upload_sensor_txt(file_path,'Walking')
 
 data_freq = 100
 shank_length = 0.44
