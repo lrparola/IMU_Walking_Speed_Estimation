@@ -1,0 +1,10 @@
+Right foot	00B4D7FE\
+Right shank	00B4D7FB\
+Right thigh	00B4D6D1\
+\
+Pelvis 		00B4D7D3\
+\
+Left foot	00B4D7FF\
+Left shank	00B4D7CE\
+Left thigh	00B4D7FD\
+}
