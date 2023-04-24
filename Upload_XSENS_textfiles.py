@@ -25,8 +25,7 @@ def find_standing(y_data,freq):
     index = y_data.index
 
     peak_locs,_ = find_peaks(-y_data.values, height = -20)
-
-    print(peak_locs)    
+   
     stand_range = [[peak_locs[i-1]+2*freq,peak_locs[i]-2*freq] for i in range(1,len(peak_locs)) if peak_locs[i] - peak_locs[i-1] > 3*freq]
     
     # if there is no break between hops and data, use before hops
@@ -86,7 +85,7 @@ def rotation_matrix_from_vectors(vec1, vec2):
     return rotation_matrix   
 
 def vertical_orientation(data,key, freq,is_feet=False):
-
+    #align to gravity where X is up 
     stand_range = find_standing(data[key]['Acc_X'],freq)
     vertical_or = data[key][['Acc_X','Acc_Y','Acc_Z']].iloc[int(stand_range[0]):int(stand_range[1])].mean(axis=0).values
 
@@ -120,7 +119,9 @@ def left_right_align(sensor_dict,key1, key2, freq):
         sensor_dict[key2]  = rotate_data(sensor_dict[key2],rotation_matrix)
         return sensor_dict
 def calibration_sensor_data(sensor_dict,key, freq,is_feet=False):
-
+	#calibrate sensor data to gravity
+	
+	#find a period of standing and calculate a rotation matrix between real data and ideal gravity orientation
         rotation_matrix, stand_range = vertical_orientation(sensor_dict,key, freq,is_feet)
 
         rotated_data  = rotate_data(sensor_dict[key],rotation_matrix)
@@ -243,7 +244,7 @@ def align_data(df,position,data_freq):
     df_old=df.copy()
     #rotation that has to be applied depends on the sensor position and side
     if 'foot' in position and 'Pelvis' not in position:
-        print('yep')
+
         x_rot_quat = quaternion.from_euler_angles(-np.pi/2,0,0)
         #z_rot_quat = quaternion.from_euler_angles(0, 0, -np.pi)
         rot_quat = x_rot_quat #*z_rot_quat
@@ -291,7 +292,7 @@ def align_data(df,position,data_freq):
     return df
 
 def upload_sensor_txt(file_path,activity):
-    
+    #upload sensors data as pandas dataframes using sensor names
     df_list = []
     with open(os.path.join(file_path,'sensor_name.txt')) as f:
         data = f.read()
